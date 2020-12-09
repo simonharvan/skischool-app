@@ -163,6 +163,8 @@ captures/
 *~
 *.swp
 
+oog
+
 # Android Patch
 gen-external-apklibs
 
@@ -176,6 +178,8 @@ obj/
 *.iml
 *.iws
 /out/
+
+google-services.json
 
 # User-specific configurations
 .idea/caches/
@@ -247,3 +251,5 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio,flutter,dart
+
+
