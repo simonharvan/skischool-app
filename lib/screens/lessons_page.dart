@@ -1,8 +1,10 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skishool/data/auth.dart';
 import 'package:skishool/models/lesson.dart';
+import 'package:skishool/screens/lesson_detail_page.dart';
 import 'package:skishool/utils/dates.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -10,30 +12,67 @@ class LessonsPage extends StatelessWidget {
   LessonsPage({Key key}) : super(key: key);
 
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
 
-  Widget _buildLessonsListTile(
-      BuildContext context, int index, List<Lesson> _lessons) {
+  Widget _buildLessonsListTile(BuildContext context, int index,
+      List<Lesson> _lessons) {
     var lesson = _lessons[index];
     Auth _auth = Provider.of<Auth>(context, listen: true);
-
-    return new ListTile(
-      onTap: () => _navigateToLessonDetails(lesson),
-      leading: Icon(
-        lesson.type == 'ski' ? Icons.accessibility : Icons.accessible_forward,
-        color: lesson.type == 'ski' ? Colors.blue : Colors.green,
-        size: 32.0,
-        semanticLabel: lesson.type,
-      ),
-      title: new Text(lesson.name),
-      subtitle: Row(
-        children: <Widget>[
-          new Text(parseTimeFromDate(lesson.from)),
-          new Text(' - '),
-          new Text(parseTimeFromDate(lesson.to))
-        ],
-      ),
-    );
+    if (index == 0 || isDateBefore(_lessons[index - 1].from, lesson.from)) {
+      return new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+             Divider(
+              color: index != 0 ? Colors.grey : Colors.white,
+              height: 10,
+              thickness: 1,
+              indent: 32,
+              endIndent: 32,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: new Text(parseDateFromStringDate(lesson.from)),
+            ),
+            new ListTile(
+              onTap: () => _navigateToLessonDetails(context, lesson),
+              leading: Icon(
+                lesson.type == 'ski'
+                    ? Icons.drag_handle
+                    : Icons.accessible_forward,
+                color: lesson.type == 'ski' ? Colors.blue : Colors.green,
+                size: 32.0,
+                semanticLabel: lesson.type,
+              ),
+              title: new Text(lesson.name),
+              subtitle: Row(
+                children: <Widget>[
+                  new Text(parseTimeFromStringDate(lesson.from)),
+                  new Text(' - '),
+                  new Text(parseTimeFromStringDate(lesson.to))
+                ],
+              ),
+            )
+          ]);
+    } else {
+      return new ListTile(
+        onTap: () => _navigateToLessonDetails(context, lesson),
+        leading: Icon(
+          lesson.type == 'ski' ? Icons.drag_handle : Icons.accessible_forward,
+          color: lesson.type == 'ski' ? Colors.blue : Colors.green,
+          size: 32.0,
+          semanticLabel: lesson.type,
+        ),
+        title: new Text(lesson.name),
+        subtitle: Row(
+          children: <Widget>[
+            new Text(parseTimeFromStringDate(lesson.from)),
+            new Text(' - '),
+            new Text(parseTimeFromStringDate(lesson.to))
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -49,7 +88,7 @@ class LessonsPage extends StatelessWidget {
     } else {
       content = SmartRefresher(
         enablePullDown: true,
-        enablePullUp: true,
+        enablePullUp: false,
         header: WaterDropHeader(),
         footer: CustomFooter(
           builder: (BuildContext context, LoadStatus mode) {
@@ -107,14 +146,14 @@ class LessonsPage extends StatelessWidget {
     );
   }
 
-  void _navigateToLessonDetails(Lesson lesson) {
-//    Navigator.of(context).push(
-//      new MaterialPageRoute(
-//        builder: (c) {
-//          return new FriendDetailsPage(friend, avatarTag: avatarTag);
-//        },
-//      ),
-//    );
+  void _navigateToLessonDetails(BuildContext context, Lesson lesson) {
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+        builder: (c) {
+          return new LessonDetailPage(lesson: lesson);
+        },
+      ),
+    );
   }
 
   void _onRefresh(Auth auth) async {

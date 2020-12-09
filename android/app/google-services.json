@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "513060725612",
+    "project_id": "ski-medved-1546097740076",
+    "storage_bucket": "ski-medved-1546097740076.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513060725612:android:c8847d9102c6a7d9784949",
+        "android_client_info": {
+          "package_name": "tech.bero.skishool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513060725612-ls9rs26g6lma68h0fl7jhr0vjf74njlh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxew9Qo4AR5_M565uxMSGf5jjDpVuRIGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513060725612-ls9rs26g6lma68h0fl7jhr0vjf74njlh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

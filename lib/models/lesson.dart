@@ -8,6 +8,9 @@ part 'lesson.g.dart';
 
 @JsonSerializable()
 class Lesson {
+  final String STATUS_PAID = 'paid';
+  final String STATUS_NOT_PAID = 'unpaid';
+
   int id;
   String from;
   String to;

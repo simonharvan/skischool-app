@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_cloud_messaging/firebase_cloud_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,9 +15,21 @@ class Auth extends ChangeNotifier {
   Token _token;
   List<Lesson> _lessons = [];
 
+  bool _alreadySend = false;
+
+  String _firebaseToken;
+
   Instructor get user => _user;
+
   Token get token => _token;
+
   List<Lesson> get lessons => _lessons;
+
+  bool get alreadySend => _alreadySend;
+
+  set alreadySend(bool alreadySend) {
+    _alreadySend = alreadySend;
+  }
 
   void loadSettings() async {
     try {
@@ -33,8 +46,6 @@ class Auth extends ChangeNotifier {
       print("User Not Found: $e");
     }
   }
-
-
 
   Future<Instructor> getMe(String token) async {
     try {
@@ -62,24 +73,23 @@ class Auth extends ChangeNotifier {
     }
   }
 
-
-
   Future<bool> login(
     String email,
     String password,
   ) async {
-
     Token token = await Api.login(email, password);
     _token = token;
     SharedPref.saveToken(token);
 
+    if (!alreadySend) {
+      postFirebaseToken(_firebaseToken);
+    }
 
     // Get Info For User
     Instructor _instructor = await getMe(token.token);
     if (_instructor != null) {
       _user = _instructor;
       notifyListeners();
-
     }
     getLessons();
 
@@ -96,4 +106,17 @@ class Auth extends ChangeNotifier {
     notifyListeners();
     return;
   }
+
+  void postFirebaseToken(String firebaseToken) {
+    if (token != null) {
+      Api.firebaseToken(token.token, firebaseToken);
+      alreadySend = true;
+    }
+  }
+
+  void setFirebaseToken(String token) {
+    _firebaseToken = token;
+  }
+
+
 }
