@@ -1,4 +1,4 @@
-# skishool
+# skischool
 
 Ski school application
 

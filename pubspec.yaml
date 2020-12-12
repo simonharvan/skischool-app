@@ -1,4 +1,4 @@
-name: skishool
+name: skischool
 description: Ski school application
 
 # The following defines the version and build number for your application.
@@ -34,7 +34,7 @@ dependencies:
   url_launcher: ^5.7.10
   firebase_core: ^0.5.3
   firebase_analytics: ^6.3.0
-  firebase_cloud_messaging: ^4.0.4+1
+  firebase_messaging: ^7.0.3
   firebase_crashlytics: ^0.2.4
 
 dev_dependencies:
