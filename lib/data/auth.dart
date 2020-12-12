@@ -4,11 +4,11 @@ import 'package:firebase_cloud_messaging/firebase_cloud_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skishool/data/api.dart';
-import 'package:skishool/data/shared_prefs.dart';
-import 'package:skishool/models/instructor.dart';
-import 'package:skishool/models/lesson.dart';
-import 'package:skishool/models/token.dart';
+import 'package:skischool/data/api.dart';
+import 'package:skischool/data/shared_prefs.dart';
+import 'package:skischool/models/instructor.dart';
+import 'package:skischool/models/lesson.dart';
+import 'package:skischool/models/token.dart';
 
 class Auth extends ChangeNotifier {
   Instructor _user;

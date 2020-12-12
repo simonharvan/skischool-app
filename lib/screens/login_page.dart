@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:skishool/data/auth.dart';
-import 'package:skishool/models/token.dart';
-import 'package:skishool/data/api.dart';
-import 'package:skishool/utils/popup.dart';
+import 'package:skischool/data/auth.dart';
+import 'package:skischool/models/token.dart';
+import 'package:skischool/data/api.dart';
+import 'package:skischool/utils/popup.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);

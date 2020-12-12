@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:skishool/data/auth.dart';
-import 'package:skishool/screens/lesson_detail_page.dart';
-import 'package:skishool/screens/lessons_page.dart';
+import 'package:skischool/data/auth.dart';
+import 'package:skischool/screens/lesson_detail_page.dart';
+import 'package:skischool/screens/lessons_page.dart';
 import 'screens/login_page.dart';
 
 // Toggle this for testing Crashlytics in your app locally.

@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:skishool/data/auth.dart';
-import 'package:skishool/models/lesson.dart';
-import 'package:skishool/utils/dates.dart';
+import 'package:skischool/data/auth.dart';
+import 'package:skischool/models/lesson.dart';
+import 'package:skischool/utils/dates.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LessonDetailPage extends StatelessWidget {

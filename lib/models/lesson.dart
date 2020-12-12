@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:skishool/models/client.dart';
-import 'package:skishool/models/instructor.dart';
+import 'package:skischool/models/client.dart';
+import 'package:skischool/models/instructor.dart';
 
 part 'lesson.g.dart';
 

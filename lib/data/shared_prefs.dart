@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skishool/models/instructor.dart';
-import 'package:skishool/models/token.dart';
+import 'package:skischool/models/instructor.dart';
+import 'package:skischool/models/token.dart';
 
 class SharedPref {
   static const String TOKEN = 'token_data';

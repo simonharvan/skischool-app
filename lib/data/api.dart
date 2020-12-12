@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:skishool/models/instructor.dart';
-import 'package:skishool/models/lesson.dart';
-import 'package:skishool/models/token.dart';
+import 'package:skischool/models/instructor.dart';
+import 'package:skischool/models/lesson.dart';
+import 'package:skischool/models/token.dart';
 
 const String API_URL = 'http://api.skischool.bero.tech/api';
 
