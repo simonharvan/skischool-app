@@ -13,7 +13,7 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) {
     json['to'] as String,
     json['name'] as String,
     json['type'] as String,
-    json['price'] as String,
+    double.parse('${json['price']}'),
     json['status'] as String,
     json['instructor'] == null
         ? null

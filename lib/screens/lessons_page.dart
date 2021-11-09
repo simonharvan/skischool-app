@@ -1,10 +1,11 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skischool/data/auth.dart';
+import 'package:skischool/data/result.dart';
 import 'package:skischool/models/lesson.dart';
 import 'package:skischool/screens/lesson_detail_page.dart';
+import 'package:skischool/screens/lessons/lessons_tile.dart';
 import 'package:skischool/utils/dates.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -12,80 +13,37 @@ class LessonsPage extends StatelessWidget {
   LessonsPage({Key key}) : super(key: key);
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
-
-  Widget _buildLessonsListTile(BuildContext context, int index,
-      List<Lesson> _lessons) {
-    var lesson = _lessons[index];
-    Auth _auth = Provider.of<Auth>(context, listen: true);
-    if (index == 0 || isDateBefore(_lessons[index - 1].from, lesson.from)) {
-      return new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-             Divider(
-              color: index != 0 ? Colors.grey : Colors.white,
-              height: 10,
-              thickness: 1,
-              indent: 32,
-              endIndent: 32,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: new Text(parseDateFromStringDate(lesson.from)),
-            ),
-            new ListTile(
-              onTap: () => _navigateToLessonDetails(context, lesson),
-              leading: Icon(
-                lesson.type == 'ski'
-                    ? Icons.drag_handle
-                    : Icons.accessible_forward,
-                color: lesson.type == 'ski' ? Colors.blue : Colors.green,
-                size: 32.0,
-                semanticLabel: lesson.type,
-              ),
-              title: new Text(lesson.name),
-              subtitle: Row(
-                children: <Widget>[
-                  new Text(parseTimeFromStringDate(lesson.from)),
-                  new Text(' - '),
-                  new Text(parseTimeFromStringDate(lesson.to))
-                ],
-              ),
-            )
-          ]);
-    } else {
-      return new ListTile(
-        onTap: () => _navigateToLessonDetails(context, lesson),
-        leading: Icon(
-          lesson.type == 'ski' ? Icons.drag_handle : Icons.accessible_forward,
-          color: lesson.type == 'ski' ? Colors.blue : Colors.green,
-          size: 32.0,
-          semanticLabel: lesson.type,
-        ),
-        title: new Text(lesson.name),
-        subtitle: Row(
-          children: <Widget>[
-            new Text(parseTimeFromStringDate(lesson.from)),
-            new Text(' - '),
-            new Text(parseTimeFromStringDate(lesson.to))
-          ],
-        ),
-      );
-    }
-  }
+      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
     Auth _auth = Provider.of<Auth>(context, listen: true);
-    List<Lesson> _lessons = _auth.lessons;
+    List<Lesson> _lessons = _auth.lessons.data;
+    ResultState _state = _auth.lessons.state;
 
     Widget content;
-    if (_lessons.isEmpty) {
+
+    if (_state == ResultState.loading) {
       content = new Center(
         child: new CircularProgressIndicator(),
       );
     } else {
+      Widget child;
+      if (_lessons.isEmpty) {
+        child = new Center(child: new Text("Nemáš žiadne hodiny :("));
+      } else {
+        child = new ListView.builder(
+          itemCount: _lessons.length,
+          itemBuilder: (BuildContext context, index) {
+            return buildLessonTile(
+                context,
+                index,
+                _lessons,
+                () => _navigateToLessonDetails(context, _lessons[index])
+            );
+          },
+        );
+      }
       content = SmartRefresher(
         enablePullDown: true,
         enablePullUp: false,
@@ -114,12 +72,7 @@ class LessonsPage extends StatelessWidget {
         onRefresh: () {
           _onRefresh(_auth);
         },
-        child: new ListView.builder(
-          itemCount: _lessons.length,
-          itemBuilder: (BuildContext context, index) {
-            return _buildLessonsListTile(context, index, _lessons);
-          },
-        ),
+        child: child,
       );
     }
 

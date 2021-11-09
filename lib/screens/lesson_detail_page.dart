@@ -18,21 +18,21 @@ class LessonDetailPage extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(lesson.name + ' (${lesson.type})'),
-//        actions: <Widget>[
-//          PopupMenuButton(
-//            onSelected: (String value) {
-//              _logout(context, _auth);
-//            },
-//            itemBuilder: (BuildContext context) {
-//              return [
-//                PopupMenuItem(
-//                  value: 'logout',
-//                  child: Text('Odhlásiť sa'),
-//                )
-//              ];
-//            },
-//          )
-//        ],
+       actions: <Widget>[
+         PopupMenuButton(
+           onSelected: (String value) {
+             _logout(context, _auth);
+           },
+           itemBuilder: (BuildContext context) {
+             return [
+               PopupMenuItem(
+                 value: 'logout',
+                 child: Text('Odhlásiť sa'),
+               )
+             ];
+           },
+         )
+       ],
       ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),

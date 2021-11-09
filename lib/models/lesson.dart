@@ -16,7 +16,7 @@ class Lesson {
   String to;
   String name;
   String type;
-  String price;
+  double price;
   String status;
   Instructor instructor;
   Client client;

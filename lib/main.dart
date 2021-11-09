@@ -27,8 +27,6 @@ class _MyAppState extends State<MyApp> {
   final Auth _auth = Auth();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-
-
   Future<void> _initializeFlutterFire() async {
     // Wait for Firebase to initialize
     await Firebase.initializeApp();
@@ -88,15 +86,12 @@ class _MyAppState extends State<MyApp> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
@@ -106,7 +101,6 @@ class _MyAppState extends State<MyApp> {
       print("Settings registered: $settings");
     });
     _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
       _auth.setFirebaseToken(token);
       _auth.postFirebaseToken(token);
       print("Push Messaging token: $token");
