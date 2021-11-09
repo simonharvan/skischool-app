@@ -4,11 +4,7 @@ import 'package:skischool/models/lesson.dart';
 import 'package:skischool/utils/dates.dart';
 
 Widget buildLessonTile(
-    BuildContext context,
-    int index,
-    List<Lesson> _lessons,
-    Function listener
-) {
+    BuildContext context, int index, List<Lesson> _lessons, Function listener) {
   var lesson = _lessons[index];
 
   if (index == 0 || isDateBefore(_lessons[index - 1].from, lesson.from)) {
@@ -27,43 +23,29 @@ Widget buildLessonTile(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
             child: new Text(parseDateFromStringDate(lesson.from)),
           ),
-          new ListTile(
-            onTap: () => listener(),
-            leading: Icon(
-              lesson.type == 'ski'
-                  ? Icons.drag_handle
-                  : Icons.accessible_forward,
-              color: lesson.type == 'ski' ? Colors.blue : Colors.green,
-              size: 32.0,
-              semanticLabel: lesson.type,
-            ),
-            title: new Text(lesson.name),
-            subtitle: Row(
-              children: <Widget>[
-                new Text(parseTimeFromStringDate(lesson.from)),
-                new Text(' - '),
-                new Text(parseTimeFromStringDate(lesson.to))
-              ],
-            ),
-          )
+          _listTile(listener, lesson)
         ]);
   } else {
-    return new ListTile(
-      onTap: () => listener(),
-      leading: Icon(
-        lesson.type == 'ski' ? Icons.drag_handle : Icons.accessible_forward,
-        color: lesson.type == 'ski' ? Colors.blue : Colors.green,
-        size: 32.0,
-        semanticLabel: lesson.type,
-      ),
-      title: new Text(lesson.name),
-      subtitle: Row(
-        children: <Widget>[
-          new Text(parseTimeFromStringDate(lesson.from)),
-          new Text(' - '),
-          new Text(parseTimeFromStringDate(lesson.to))
-        ],
-      ),
-    );
+    return _listTile(listener, lesson);
   }
+}
+
+Widget _listTile(Function listener, Lesson lesson) {
+  return new ListTile(
+    onTap: () => listener(),
+    leading: Icon(
+      lesson.type == 'ski' ? Icons.accessibility_new : Icons.wheelchair_pickup,
+      color: lesson.type == 'ski' ? Colors.blue : Colors.green,
+      size: 32.0,
+      semanticLabel: lesson.type,
+    ),
+    title: new Text(lesson.name),
+    subtitle: Row(
+      children: <Widget>[
+        new Text(parseTimeFromStringDate(lesson.from)),
+        new Text(' - '),
+        new Text(parseTimeFromStringDate(lesson.to))
+      ],
+    ),
+  );
 }

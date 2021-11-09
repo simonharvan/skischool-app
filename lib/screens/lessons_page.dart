@@ -35,12 +35,8 @@ class LessonsPage extends StatelessWidget {
         child = new ListView.builder(
           itemCount: _lessons.length,
           itemBuilder: (BuildContext context, index) {
-            return buildLessonTile(
-                context,
-                index,
-                _lessons,
-                () => _navigateToLessonDetails(context, _lessons[index])
-            );
+            return buildLessonTile(context, index, _lessons,
+                () => _navigateToLessonDetails(context, _lessons[index]));
           },
         );
       }
@@ -79,21 +75,61 @@ class LessonsPage extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Hodiny'),
-        actions: <Widget>[
-          PopupMenuButton(
-            onSelected: (String value) {
-              _logout(context, _auth);
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: 'logout',
-                  child: Text('Odhlásiť sa'),
-                )
-              ];
-            },
-          )
-        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      _auth.user.name,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      _auth.user.email,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      _auth.user.phone,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Odhlásiť'),
+              onTap: () => _logout(context, _auth),
+            ),
+          ],
+        ),
       ),
       body: content,
     );

@@ -45,17 +45,11 @@ class _MyAppState extends State<MyApp> {
 
     _initializeFlutterFire();
 
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-//    return new MaterialApp(
-//      title: 'SkiSchool',
-//      theme: ,
-//      home: new LoginPage(),
-//    );
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<Auth>.value(value: _auth),

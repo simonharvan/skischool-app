@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skischool/data/auth.dart';
@@ -13,26 +12,10 @@ class LessonDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Auth _auth = Provider.of<Auth>(context, listen: true);
     double fontSize = 16;
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(lesson.name + ' (${lesson.type})'),
-       actions: <Widget>[
-         PopupMenuButton(
-           onSelected: (String value) {
-             _logout(context, _auth);
-           },
-           itemBuilder: (BuildContext context) {
-             return [
-               PopupMenuItem(
-                 value: 'logout',
-                 child: Text('Odhlásiť sa'),
-               )
-             ];
-           },
-         )
-       ],
       ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -49,7 +32,8 @@ class LessonDetailPage extends StatelessWidget {
                       children: [
                         new Text('Dátum: ',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: fontSize)),
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontSize)),
                         new Text(parseDateFromStringDate(lesson.from),
                             style: TextStyle(fontSize: fontSize))
                       ],
@@ -61,7 +45,8 @@ class LessonDetailPage extends StatelessWidget {
                       children: [
                         new Text('Čas: ',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: fontSize)),
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontSize)),
                         new Text(parseTimeFromStringDate(lesson.from),
                             style: TextStyle(fontSize: fontSize)),
                         new Text(' - ', style: TextStyle(fontSize: fontSize)),
@@ -117,7 +102,8 @@ class LessonDetailPage extends StatelessWidget {
                         ),
                         lesson.client.phone_2 != null
                             ? Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
                                 child: new Row(
                                   children: [
                                     new Text('Telefón 2: ',
