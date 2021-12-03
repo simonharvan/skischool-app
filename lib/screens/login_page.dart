@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skischool/data/auth.dart';
-import 'package:skischool/models/token.dart';
-import 'package:skischool/data/api.dart';
+import 'package:skischool/utils/logger.dart';
 import 'package:skischool/utils/popup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -79,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login(Auth auth) async {
-    print('Login ' + email.text + ' ' + password.text);
+    Log.d('Login ' + email.text + ' ' + password.text);
 
     if (validate(email.text, password.text)) {
       final snackbar = SnackBar(
@@ -119,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
 
   loginSuccess(bool value) {
     _scaffoldKey.currentState.hideCurrentSnackBar();
-    print('Login finished $value');
+    Log.d('Login finished $value');
   }
 
   loginError() {

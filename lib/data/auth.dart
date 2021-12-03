@@ -1,22 +1,21 @@
-import 'dart:convert';
-
-//import 'package:firebase_cloud_messaging/firebase_cloud_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skischool/data/api.dart';
 import 'package:skischool/data/result.dart';
 import 'package:skischool/data/shared_prefs.dart';
 import 'package:skischool/models/instructor.dart';
 import 'package:skischool/models/lesson.dart';
 import 'package:skischool/models/token.dart';
+import 'package:skischool/utils/logger.dart';
 
 class Auth extends ChangeNotifier {
+  static const PAGE_SIZE = 15;
+
   Instructor _user;
   Token _token;
   Result<List<Lesson>> _lessons = Result<List<Lesson>>(data: []);
 
-  bool _alreadySend = false;
+  bool alreadySend = false;
 
   String _firebaseToken;
 
@@ -25,12 +24,6 @@ class Auth extends ChangeNotifier {
   Token get token => _token;
 
   Result<List<Lesson>> get lessons => _lessons;
-
-  bool get alreadySend => _alreadySend;
-
-  set alreadySend(bool alreadySend) {
-    _alreadySend = alreadySend;
-  }
 
   void loadSettings() async {
     try {
@@ -44,35 +37,35 @@ class Auth extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("User Not Found: $e");
+      Log.w("User Not Found: $e");
     }
   }
 
   Future<Instructor> getMe(String token) async {
     try {
-      print("Getting me: ${_token.token}");
+      Log.d("Getting me: ${_token.token}");
       var instructor = await Api.me(token);
       _user = instructor;
       SharedPref.saveInstructor(instructor);
       return instructor;
     } catch (e) {
-      print("Could Not Load Data: $e");
+      Log.w("Could not load me: $e");
       return null;
     }
   }
 
-  Future<List<Lesson>> getLessons() async {
+  Future<List<Lesson>> getLessons({int offset = 0}) async {
     _lessons.state = ResultState.loading;
     notifyListeners();
     try {
-      print("Getting lessons: ${_token.token}");
-      var lessons = await Api.lessons(_token.token);
+      Log.d("Getting lessons: ${_token.token}");
+      var lessons = await Api.lessons(_token.token, offset, PAGE_SIZE);
       _lessons.data = lessons;
       _lessons.state = ResultState.standard;
       notifyListeners();
       return lessons;
     } catch (e) {
-      print("Could Not Load Data: $e");
+      Log.w("Could not load lessons: $e");
       _lessons.state = ResultState.error;
       notifyListeners();
       return null;
@@ -124,6 +117,4 @@ class Auth extends ChangeNotifier {
   void setFirebaseToken(String token) {
     _firebaseToken = token;
   }
-
-
 }

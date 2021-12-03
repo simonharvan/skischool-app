@@ -9,12 +9,16 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:skischool/data/auth.dart';
 import 'package:skischool/screens/lesson_detail_page.dart';
 import 'package:skischool/screens/lessons_page.dart';
+import 'package:skischool/utils/logger.dart';
 import 'screens/login_page.dart';
 
 // Toggle this for testing Crashlytics in your app locally.
 final _kTestingCrashlytics = true;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  Log.init();
   runApp(new MyApp());
 }
 
@@ -25,12 +29,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Auth _auth = Auth();
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> _initializeFlutterFire() async {
-    // Wait for Firebase to initialize
-    await Firebase.initializeApp();
-
     await _initializeCrashlytics();
     await _initializeMessaging();
   }
@@ -40,9 +41,8 @@ class _MyAppState extends State<MyApp> {
     try {
       _auth.loadSettings();
     } catch (e) {
-      print("Error Loading Settings: $e");
+      Log.e("Error Loading Settings: $e");
     }
-
     _initializeFlutterFire();
 
     super.initState();
@@ -72,35 +72,20 @@ class _MyAppState extends State<MyApp> {
               "/lesson": (BuildContext context) => LessonDetailPage(),
             },
           ),
-        )
-    );
+        ));
   }
 
   Future<void> _initializeMessaging() async {
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
+    _firebaseMessaging.requestPermission(sound: true, badge: true, alert: true);
     _firebaseMessaging.getToken().then((String token) {
       _auth.setFirebaseToken(token);
       _auth.postFirebaseToken(token);
-      print("Push Messaging token: $token");
+      Log.d("Push Messaging token: $token");
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      Log.d("Push notification: ${message.data}");
     });
   }
-
 
   Future<void> _initializeCrashlytics() async {
     if (_kTestingCrashlytics) {

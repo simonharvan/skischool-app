@@ -7,7 +7,7 @@ String parseTimeFromStringDate(String date)  {
     min = '0' + min;
   }
 
-  return '${DateTime.parse(date).hour}:${min}';
+  return '${DateTime.parse(date).hour}:$min';
 }
 
 String parseDateFromStringDate(String date)  {

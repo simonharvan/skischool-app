@@ -1,24 +1,57 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:skischool/data/auth.dart';
 import 'package:skischool/data/result.dart';
 import 'package:skischool/models/lesson.dart';
 import 'package:skischool/screens/lesson_detail_page.dart';
 import 'package:skischool/screens/lessons/lessons_tile.dart';
-import 'package:skischool/utils/dates.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:skischool/utils/logger.dart';
 
-class LessonsPage extends StatelessWidget {
+class LessonsPage extends StatefulWidget {
   LessonsPage({Key key}) : super(key: key);
 
+  @override
+  _LessonsPageState createState() => _LessonsPageState();
+}
+
+class _LessonsPageState extends State<LessonsPage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+  final PagingController<int, Lesson> _pagingController =
+      PagingController(firstPageKey: 0);
+
+  @override
+  void initState() {
+    Auth _auth = Provider.of<Auth>(context, listen: false);
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(_auth, pageKey);
+    });
+    super.initState();
+  }
+
+  Future<void> _fetchPage(Auth auth, int pageKey) async {
+    try {
+      final newItems = await auth.getLessons(offset: pageKey);
+      final isLastPage = newItems.length < Auth.PAGE_SIZE;
+      Log.d("isLastPage: $isLastPage, new items length: ${newItems.length}");
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        _pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Auth _auth = Provider.of<Auth>(context, listen: true);
-    List<Lesson> _lessons = _auth.lessons.data;
     ResultState _state = _auth.lessons.state;
 
     Widget content;
@@ -29,16 +62,19 @@ class LessonsPage extends StatelessWidget {
       );
     } else {
       Widget child;
-      if (_lessons.isEmpty) {
+      if (_pagingController.itemList != null &&
+          _pagingController.itemList.isEmpty) {
         child = new Center(child: new Text("Nemáš žiadne hodiny :("));
       } else {
-        child = new ListView.builder(
-          itemCount: _lessons.length,
-          itemBuilder: (BuildContext context, index) {
-            return buildLessonTile(context, index, _lessons,
-                () => _navigateToLessonDetails(context, _lessons[index]));
-          },
-        );
+        child = new PagedListView(
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<Lesson>(
+              itemBuilder: (context, item, index) => buildLessonTile(
+                  context,
+                  index,
+                  _pagingController.itemList,
+                  (lesson) => {_navigateToLessonDetails(context, lesson)}),
+            ));
       }
       content = SmartRefresher(
         enablePullDown: true,
@@ -65,9 +101,9 @@ class LessonsPage extends StatelessWidget {
           },
         ),
         controller: _refreshController,
-        onRefresh: () {
-          _onRefresh(_auth);
-        },
+        onRefresh: () => Future.sync(
+          () => _pagingController.refresh(),
+        ),
         child: child,
       );
     }
@@ -135,6 +171,12 @@ class LessonsPage extends StatelessWidget {
     );
   }
 
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
   void _navigateToLessonDetails(BuildContext context, Lesson lesson) {
     Navigator.of(context).push(
       new MaterialPageRoute(
@@ -143,13 +185,6 @@ class LessonsPage extends StatelessWidget {
         },
       ),
     );
-  }
-
-  void _onRefresh(Auth auth) async {
-    // monitor network fetch
-    await auth.getLessons();
-    // if failed,use refreshFailed()
-    _refreshController.refreshCompleted();
   }
 
   _logout(BuildContext context, Auth auth) {

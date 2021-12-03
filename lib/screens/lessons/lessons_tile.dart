@@ -5,6 +5,11 @@ import 'package:skischool/utils/dates.dart';
 
 Widget buildLessonTile(
     BuildContext context, int index, List<Lesson> _lessons, Function listener) {
+
+  if (index < 0 && index >= _lessons.length) {
+    return null;
+  }
+
   var lesson = _lessons[index];
 
   if (index == 0 || isDateBefore(_lessons[index - 1].from, lesson.from)) {
@@ -32,7 +37,7 @@ Widget buildLessonTile(
 
 Widget _listTile(Function listener, Lesson lesson) {
   return new ListTile(
-    onTap: () => listener(),
+    onTap: () => listener(lesson),
     leading: Icon(
       lesson.type == 'ski' ? Icons.accessibility_new : Icons.wheelchair_pickup,
       color: lesson.type == 'ski' ? Colors.blue : Colors.green,

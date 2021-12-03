@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skischool/models/instructor.dart';
 import 'package:skischool/models/token.dart';
+import 'package:skischool/utils/logger.dart';
 
 class SharedPref {
   static const String TOKEN = 'token_data';
@@ -14,13 +15,13 @@ class SharedPref {
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var _save = json.encode(token.toJson());
-    print("Save data TOKEN: $_save");
+    Log.d("Save data TOKEN: $_save");
     prefs.setString(TOKEN, _save);
   }
 
   static deleteToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(TOKEN, null);
+    prefs.remove(TOKEN);
   }
 
   static Future<Token> getToken() async {
@@ -39,13 +40,13 @@ class SharedPref {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var _save = json.encode(instructor.toJson());
-    print("Save data INSTRUCTOR: $_save");
+    Log.d("Save data INSTRUCTOR: $_save");
     prefs.setString(INSTRUCTOR, _save);
   }
 
   static deleteInstructor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(INSTRUCTOR, null);
+    prefs.remove(INSTRUCTOR);
   }
 
   static Future<Instructor> getInstructor() async {

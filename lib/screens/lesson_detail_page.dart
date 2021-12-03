@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:skischool/data/auth.dart';
 import 'package:skischool/models/lesson.dart';
 import 'package:skischool/utils/dates.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 class LessonDetailPage extends StatelessWidget {
   final Lesson lesson;
 
-  LessonDetailPage({Lesson this.lesson, Key key}) : super(key: key);
+  LessonDetailPage({this.lesson, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -128,13 +126,13 @@ class LessonDetailPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: new Text(
-                              lesson.status == lesson.STATUS_PAID
+                              lesson.status == STATUS_PAID
                                   ? 'Zaplatené'
                                   : 'Nezaplatené',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontSize,
-                                  color: lesson.status == lesson.STATUS_PAID
+                                  color: lesson.status == STATUS_PAID
                                       ? Colors.green
                                       : Colors.red)),
                         ),
@@ -167,9 +165,5 @@ class LessonDetailPage extends StatelessWidget {
             ],
           )),
     );
-  }
-
-  _logout(BuildContext context, Auth auth) {
-    auth.logout();
   }
 }

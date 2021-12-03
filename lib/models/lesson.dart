@@ -1,16 +1,14 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:skischool/models/client.dart';
 import 'package:skischool/models/instructor.dart';
 
 part 'lesson.g.dart';
 
+const String STATUS_PAID = 'paid';
+const String STATUS_NOT_PAID = 'unpaid';
+
 @JsonSerializable()
 class Lesson {
-  final String STATUS_PAID = 'paid';
-  final String STATUS_NOT_PAID = 'unpaid';
-
   int id;
   String from;
   String to;
