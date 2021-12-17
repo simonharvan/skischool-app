@@ -7,7 +7,7 @@ import 'package:skischool/models/lesson.dart';
 import 'package:skischool/models/token.dart';
 import 'package:skischool/utils/logger.dart';
 
-const String API_URL = 'http://api.skischool.bero.tech/api';
+const String API_URL = 'https://api.skischool.bero.tech/api';
 
 class Api {
   static Future<Token> login(String email, String password) async {

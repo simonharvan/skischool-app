@@ -7,17 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:skischool/data/auth.dart';
+import 'package:skischool/firebase_options.dart';
 import 'package:skischool/screens/lesson_detail_page.dart';
 import 'package:skischool/screens/lessons_page.dart';
 import 'package:skischool/utils/logger.dart';
 import 'screens/login_page.dart';
 
 // Toggle this for testing Crashlytics in your app locally.
-final _kTestingCrashlytics = true;
+final _kTestingCrashlytics = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   Log.init();
   runApp(new MyApp());
 }
@@ -58,7 +61,7 @@ class _MyAppState extends State<MyApp> {
           enableScrollWhenRefreshCompleted: true,
           headerBuilder: () => MaterialClassicHeader(),
           child: MaterialApp(
-            debugShowCheckedModeBanner: true,
+            debugShowCheckedModeBanner: kDebugMode,
             theme: new ThemeData(
               primarySwatch: Colors.blue,
             ),
