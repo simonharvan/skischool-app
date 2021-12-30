@@ -114,6 +114,22 @@ class LessonDetailPage extends StatelessWidget {
                                 ),
                               )
                             : Container(),
+                        lesson.note != null
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: new Row(
+                                  children: [
+                                    new Text('Poznámka: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: fontSize)),
+                                    new Text(lesson.note,
+                                        style: TextStyle(fontSize: fontSize))
+                                  ],
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),

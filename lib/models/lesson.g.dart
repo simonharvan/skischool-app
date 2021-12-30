@@ -15,6 +15,7 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) {
     json['type'] as String,
     double.parse('${json['price']}'),
     json['status'] as String,
+    json['note'] as String,
     json['instructor'] == null
         ? null
         : Instructor.fromJson(json['instructor'] as Map<String, dynamic>),
@@ -32,6 +33,7 @@ Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
       'type': instance.type,
       'price': instance.price,
       'status': instance.status,
+      'note': instance.note,
       'instructor': instance.instructor,
       'client': instance.client,
     };

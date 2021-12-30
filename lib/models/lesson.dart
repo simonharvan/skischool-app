@@ -14,13 +14,14 @@ class Lesson {
   String to;
   String name;
   String type;
+  String note;
   double price;
   String status;
   Instructor instructor;
   Client client;
 
   Lesson(this.id, this.from, this.to, this.name, this.type, this.price,
-      this.status, this.instructor, this.client);
+      this.status, this.note, this.instructor, this.client);
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
 
