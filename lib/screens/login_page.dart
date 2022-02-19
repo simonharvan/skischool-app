@@ -99,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
         var result = await auth.login(email.text, password.text);
         loginSuccess(result);
       } catch (error) {
+        Log.e(error.toString());
         loginError();
       }
     } else {
