@@ -5,7 +5,7 @@ import 'package:skischool/utils/logger.dart';
 import 'package:skischool/utils/popup.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       );
-      _scaffoldKey.currentState.showSnackBar(snackbar);
+      _scaffoldKey.currentState!.showSnackBar(snackbar);
 
       try {
         var result = await auth.login(email.text, password.text);
@@ -118,12 +118,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   loginSuccess(bool value) {
-    _scaffoldKey.currentState.hideCurrentSnackBar();
+    _scaffoldKey.currentState!.hideCurrentSnackBar();
     Log.d('Login finished $value');
   }
 
   loginError() {
-    _scaffoldKey.currentState.hideCurrentSnackBar();
+    _scaffoldKey.currentState!.hideCurrentSnackBar();
     showAlertPopup(context, 'Chyba', 'Zle zadany email alebo heslo');
   }
 }

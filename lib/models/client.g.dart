@@ -9,10 +9,10 @@ part of 'client.dart';
 Client _$ClientFromJson(Map<String, dynamic> json) {
   return Client(
     json['id'] as int,
-    json['name'] as String,
-    json['email'] as String,
-    json['phone'] as String,
-    json['phone_2'] as String,
+    json['name'] as String?,
+    json['email'] as String?,
+    json['phone'] as String?,
+    json['phone_2'] as String?,
   );
 }
 

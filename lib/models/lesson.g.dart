@@ -15,13 +15,9 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) {
     json['type'] as String,
     double.parse('${json['price']}'),
     json['status'] as String,
-    json['note'] as String,
-    json['instructor'] == null
-        ? null
-        : Instructor.fromJson(json['instructor'] as Map<String, dynamic>),
-    json['client'] == null
-        ? null
-        : Client.fromJson(json['client'] as Map<String, dynamic>),
+    json['note'] as String?,
+    Instructor.fromJson(json['instructor'] as Map<String, dynamic>),
+    Client.fromJson(json['client'] as Map<String, dynamic>),
   );
 }
 

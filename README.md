@@ -29,7 +29,7 @@ samples, guidance on mobile development, and a full API reference.
 
 ## TO DO 
 [ ] Implement refresh token
-[ ] Implement logout on refresh fail
+[X] Implement logout on refresh fail 
 [ ] Implement attendance 
 [ ] Implement stats 
 

@@ -7,7 +7,7 @@ Widget buildLessonTile(
     BuildContext context, int index, List<Lesson> _lessons, Function listener) {
 
   if (index < 0 && index >= _lessons.length) {
-    return null;
+    return const SizedBox.shrink();
   }
 
   var lesson = _lessons[index];
@@ -38,6 +38,7 @@ Widget buildLessonTile(
 Widget _listTile(Function listener, Lesson lesson) {
   return new ListTile(
     onTap: () => listener(lesson),
+    tileColor: isToday(lesson.from) ? Colors.lightBlue.shade100 : Colors.white,
     leading: Icon(
       lesson.type == 'ski' ? Icons.accessibility_new : Icons.wheelchair_pickup,
       color: lesson.type == 'ski' ? Colors.blue : Colors.green,

@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:skischool/data/auth_exception.dart';
 import 'package:skischool/models/instructor.dart';
 import 'package:skischool/models/lesson.dart';
 import 'package:skischool/models/token.dart';
 import 'package:skischool/utils/logger.dart';
+import 'package:intl/intl.dart';
 
 const String API_URL = 'https://api.skischool.bero.tech/api';
 
@@ -34,8 +36,7 @@ class Api {
   }
 
   static Future<Instructor> me(String token) async {
-    final response =
-        await http.get(Uri.parse(API_URL + '/instructor/me'), headers: <String, String>{
+    final response = await getInternal(Uri.parse(API_URL + '/instructor/me'), headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer ' + token,
     });
@@ -56,21 +57,28 @@ class Api {
   }
 
   static Future<List<Lesson>> lessons(
-      String token, int page, int pageSize) async {
+      String token, int page, int pageSize, DateTime? date) async {
     String offset = page.toString();
     String limit = pageSize.toString();
-    Uri uri = Uri.parse(API_URL + '/instructor/lessons?offset=' + offset + '&limit=' + limit);
-    final response = await http.get(uri, headers: <String, String>{
+    String uriString =
+        API_URL + '/instructor/lessons?offset=' + offset + '&limit=' + limit;
+    if (date != null) {
+      var format = DateFormat('yyyy-MM-dd');
+      var dateString = format.format(date);
+      uriString += '&date=' + dateString;
+    }
+    Log.d('Calling API: $uriString');
+    Uri uri = Uri.parse(uriString);
+    final response = await getInternal(uri, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer ' + token,
     });
     if (response.statusCode == 200) {
       // If the server did return a 200 CREATED response,
       // then parse the JSON.
+      Log.d('Response from API ${response.body}');
       List<Lesson> lessons =
           Lesson.arrayFromJson(json.decode(response.body)['lessons']);
-
-      Log.d('Response from API ${response.body}');
       return lessons;
     } else {
       // If the server did not return a 201 CREATED response,
@@ -103,5 +111,14 @@ class Api {
       Log.d('Response from API ' + response.statusCode.toString());
       Log.d(response.body);
     }
+  }
+
+  static Future<http.Response> getInternal(Uri url,
+      {Map<String, String>? headers}) async {
+    final response = await http.get(url, headers: headers);
+    if (response.statusCode == 401) {
+      throw AuthException();
+    }
+    return response;
   }
 }

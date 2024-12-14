@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:skischool/models/client.dart';
 import 'package:skischool/models/instructor.dart';
@@ -14,7 +15,7 @@ class Lesson {
   String to;
   String name;
   String type;
-  String note;
+  String? note;
   double price;
   String status;
   Instructor instructor;

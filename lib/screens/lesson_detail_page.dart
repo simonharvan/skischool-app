@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 class LessonDetailPage extends StatelessWidget {
   final Lesson lesson;
 
-  LessonDetailPage({this.lesson, Key key}) : super(key: key);
+  LessonDetailPage({required this.lesson, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class LessonDetailPage extends StatelessWidget {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontSize)),
-                              new Text(lesson.client.name,
+                              new Text(lesson.client.name ?? "",
                                   style: TextStyle(fontSize: fontSize))
                             ],
                           ),
@@ -80,7 +80,7 @@ class LessonDetailPage extends StatelessWidget {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontSize)),
-                              new Text(lesson.client.email,
+                              new Text(lesson.client.email ?? "",
                                   style: TextStyle(fontSize: fontSize))
                             ],
                           ),
@@ -93,7 +93,7 @@ class LessonDetailPage extends StatelessWidget {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontSize)),
-                              new Text(lesson.client.phone,
+                              new Text(lesson.client.phone ?? "",
                                   style: TextStyle(fontSize: fontSize))
                             ],
                           ),
@@ -108,7 +108,7 @@ class LessonDetailPage extends StatelessWidget {
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: fontSize)),
-                                    new Text(lesson.client.phone,
+                                    new Text(lesson.client.phone ?? "",
                                         style: TextStyle(fontSize: fontSize))
                                   ],
                                 ),
@@ -124,7 +124,7 @@ class LessonDetailPage extends StatelessWidget {
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: fontSize)),
-                                    new Text(lesson.note,
+                                    new Text(lesson.note ?? "",
                                         style: TextStyle(fontSize: fontSize))
                                   ],
                                 ),

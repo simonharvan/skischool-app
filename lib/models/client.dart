@@ -5,10 +5,10 @@ part 'client.g.dart';
 @JsonSerializable()
 class Client {
   int id;
-  String name;
-  String email;
-  String phone;
-  String phone_2;
+  String? name;
+  String? email;
+  String? phone;
+  String? phone_2;
 
 
   Client(this.id, this.name, this.email, this.phone, this.phone_2);

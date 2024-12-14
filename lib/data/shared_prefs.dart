@@ -10,9 +10,6 @@ class SharedPref {
   static const String INSTRUCTOR = 'instructor_data';
 
   static saveToken(Token token) async {
-    if (token == null) {
-      return;
-    }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var _save = json.encode(token.toJson());
     Log.d("Save data TOKEN: $_save");
@@ -24,7 +21,7 @@ class SharedPref {
     prefs.remove(TOKEN);
   }
 
-  static Future<Token> getToken() async {
+  static Future<Token?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var _saved = prefs.getString(TOKEN);
     if (_saved == null) {
@@ -49,7 +46,7 @@ class SharedPref {
     prefs.remove(INSTRUCTOR);
   }
 
-  static Future<Instructor> getInstructor() async {
+  static Future<Instructor?> getInstructor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var _saved = prefs.getString(INSTRUCTOR);
     if (_saved == null) {

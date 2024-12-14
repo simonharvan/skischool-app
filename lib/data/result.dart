@@ -1,6 +1,6 @@
 class Result<T> {
   ResultState state;
-  T data;
+  T? data;
 
   Result({this.state = ResultState.standard, this.data});
 }

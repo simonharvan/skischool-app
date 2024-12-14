@@ -18,9 +18,7 @@ final _kTestingCrashlytics = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Log.init();
   runApp(new MyApp());
 }
@@ -66,13 +64,12 @@ class _MyAppState extends State<MyApp> {
               primarySwatch: Colors.blue,
             ),
             home: Consumer<Auth>(builder: (context, model, child) {
-              if (model?.token != null) return LessonsPage();
+              if (model.token != null) return LessonsPage();
               return LoginPage();
             }),
             routes: <String, WidgetBuilder>{
               "/login": (BuildContext context) => LoginPage(),
               "/lessons": (BuildContext context) => LessonsPage(),
-              "/lesson": (BuildContext context) => LessonDetailPage(),
             },
           ),
         ));
@@ -80,10 +77,12 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _initializeMessaging() async {
     _firebaseMessaging.requestPermission(sound: true, badge: true, alert: true);
-    _firebaseMessaging.getToken().then((String token) {
-      _auth.setFirebaseToken(token);
-      _auth.postFirebaseToken(token);
-      Log.d("Push Messaging token: $token");
+    _firebaseMessaging.getToken().then((String? token) {
+      if (token != null) {
+        _auth.setFirebaseToken(token);
+        _auth.postFirebaseToken(token);
+        Log.d("Push Messaging token: $token");
+      }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       Log.d("Push notification: ${message.data}");
@@ -102,11 +101,11 @@ class _MyAppState extends State<MyApp> {
     }
 
     // Pass all uncaught errors to Crashlytics.
-    Function originalOnError = FlutterError.onError;
+    Function? originalOnError = FlutterError.onError;
     FlutterError.onError = (FlutterErrorDetails errorDetails) async {
       await FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
       // Forward to original handler.
-      originalOnError(errorDetails);
+      originalOnError!(errorDetails);
     };
   }
 }
