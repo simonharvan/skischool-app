@@ -51,11 +51,12 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: FlatButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              padding: EdgeInsets.all(16.0),
-              splashColor: Colors.blueAccent,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.all(16.0),
+              ),
               onPressed: () {
                 login(_auth);
               },
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       );
-      _scaffoldKey.currentState!.showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
       try {
         var result = await auth.login(email.text, password.text);
@@ -118,12 +119,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   loginSuccess(bool value) {
-    _scaffoldKey.currentState!.hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     Log.d('Login finished $value');
   }
 
   loginError() {
-    _scaffoldKey.currentState!.hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     showAlertPopup(context, 'Chyba', 'Zle zadany email alebo heslo');
   }
 }

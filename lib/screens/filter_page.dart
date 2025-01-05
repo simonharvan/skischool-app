@@ -57,19 +57,19 @@ class _FilterPageState extends State<FilterPage> {
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FlatButton(
+                  TextButton(
                       child: Text('Vyčisti'),
                       onPressed: () {
                         _auth.setFilterDate(null);
                         Navigator.pop(context, true);
                       }),
-                  FlatButton(
+                  TextButton(
                       child: Text('Dnes'),
                       onPressed: () {
                         _auth.setFilterDate(DateTime.now());
                         Navigator.pop(context, true);
                       }),
-                  FlatButton(
+                  TextButton(
                       child: Text('OK'),
                       onPressed: () {
                         _auth.setFilterDate(_selectedDay);

@@ -160,17 +160,21 @@ class LessonDetailPage extends StatelessWidget {
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  new FlatButton(
-                      color: Colors.blue,
-                      textColor: Colors.white,
+                  new TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                      ),
                       onPressed: () => launch("tel:${lesson.client.phone}"),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: new Text("Volať"),
                       )),
-                  new FlatButton(
-                      color: Colors.blue,
-                      textColor: Colors.white,
+                  new TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                      ),
                       onPressed: () => launch("sms:${lesson.client.phone}"),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),

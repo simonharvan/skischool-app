@@ -17,7 +17,7 @@ void showAlertPopup(BuildContext context, String title, String detail) async {
         title: Text(title),
         content: Text(detail),
         actions: [
-          FlatButton(
+          TextButton(
               child: Text('OK'),
               onPressed: () {
                 Navigator.pop(context);
