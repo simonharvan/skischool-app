@@ -252,3 +252,4 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio,flutter,dart
 /lib/firebase_options.dart
+/ios/Runner/GoogleServicesInfo.plist
